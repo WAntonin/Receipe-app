@@ -6,12 +6,13 @@
     </head>
     <body>
         <a id="home" href="/index.html">Home</a>
-        <a href="/edit.html" id="edit-recipe">Edit recipe</a>
-        <h1 id="recipe-title"></h1>
+        <input type="text" id="recipe-title" placeholder="Edit the title">
         <h2 id="instructions-title">Instructions</h2>
-        <div id="instruction-display"></div>
+        <textarea id="recipe-instructions" placeholder="Enter the recipe instructions."></textarea>
         <h2 id="ingredients-title">Ingredients</h2>
-        <div id="ingredients-display"></div>
+        <div id="ingredients-list"></div>
+        <input type="text" id="input-ingredient">
+        <button id="add-ingredient">Add ingredient</button>
 
         <script src="/scripts/edit-bundle.js"></script>
     </body>

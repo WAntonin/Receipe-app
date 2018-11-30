@@ -5,7 +5,7 @@ import { createRecipe } from './recipes'
 renderRecipes()
 
 console.log(document.querySelector('#create-recipe'))
-document.querySelector('#create-recipe').addEventListener('click', (e) => {
+document.querySelector('#create-recipe').addEventListener('click', () => {
     createRecipe()
     renderRecipes()
 })
