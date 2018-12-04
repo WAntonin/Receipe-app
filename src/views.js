@@ -1,5 +1,6 @@
-import { getRecipes, toggleIngredient, removeIngredient } from './recipes'
-import { getFilters } from './filters'
+import { getRecipes, toggleIngredient, removeIngredient, getAllIngredients } from './recipes'
+import { refreshIngredientStock, findRecipe } from './recipes'
+import { getFilters, setFilters, unsetFilters } from './filters'
 
 const generateRecipeDOM = (recipe) => {
     const recipeEl = document.createElement('a')
@@ -18,9 +19,28 @@ const generateRecipeDOM = (recipe) => {
 }
 
 const renderRecipes = () => {
-    const { searchText } = getFilters()
+    const { searchText, myIngredients } = getFilters()
     const recipes = getRecipes()
-    const filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
+
+    // 
+    let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
+
+    // const filterIngredients = myIngredients.includes(recipe.ingredients.forEach((ingredient) => ingredient.name))
+    // console.log(recipe.ingredients.forEach((ingredient) => ingredient.name))
+    // console.log('filterIngredients', filterIngredients)
+    // // recipe.ingredients.forEach((ingredient) => myIngredients.includes(ingredient.name))
+
+    if (myIngredients.length > 0) {
+        refreshIngredientStock(myIngredients)
+        filteredRecipes = filteredRecipes.filter((recipe) => {
+            let display = false
+            recipe.ingredients.forEach((ingredient) => {
+                display = display || ingredient.inStock
+                return display
+            })
+            return display
+        })
+    }
 
     const recipesEl = document.querySelector('#recipes')
     recipesEl.innerHTML = ''
@@ -31,13 +51,53 @@ const renderRecipes = () => {
     })
 }
 
+const renderIngredientsFilter = () => {
+    const { myIngredients } = getFilters()
+    const availableIngredientsEl = document.querySelector('#available-ingredients')
+    const filterIngredientsEl = document.querySelector('#filter-ingredients')
+    let availableIngredients = getAllIngredients()
+
+    // Clear ingredients
+    availableIngredientsEl.innerHTML = ''
+    filterIngredientsEl.innerHTML = ''
+
+    // Remove filtered ingredients from available ingredients
+    availableIngredients = availableIngredients.filter((ingredient) => !myIngredients.includes(ingredient))
+
+    myIngredients.forEach((ingredient) => {
+        const ingredientEl = document.createElement('span')
+        ingredientEl.textContent = ingredient
+        ingredientEl.addEventListener('click', () => {
+            unsetFilters({
+                myIngredients: ingredient
+            })
+            renderIngredientsFilter()
+            renderRecipes()
+        })
+        filterIngredientsEl.appendChild(ingredientEl)
+    })
+
+    availableIngredients.forEach((ingredient) => {
+        const ingredientEl = document.createElement('span')
+        ingredientEl.textContent = ingredient
+        ingredientEl.addEventListener('click', () => {
+            setFilters({
+                myIngredients: ingredient
+            })
+            renderIngredientsFilter()
+            renderRecipes()
+        })
+        availableIngredientsEl.appendChild(ingredientEl)
+    })
+}
+
 const initialiseDisplayPage = (recipeId) => {
     const recipes = getRecipes()
     const titleEl = document.querySelector('#recipe-title')
     const instructionsEl = document.querySelector('#instruction-display')
     const ingredientsEl = document.querySelector('#ingredients-display')
     const editRecipeEl = document.querySelector('#edit-recipe')
-    const recipe = recipes.find((recipe) => recipe.id.includes(recipeId))
+    const recipe = findRecipe(recipeId)
 
     editRecipeEl.setAttribute('href', `/edit.html#${recipeId}`)
 
@@ -52,23 +112,21 @@ const initialiseDisplayPage = (recipeId) => {
 }
 
 const initialiseEditPage = (recipeId) => {
-    const recipes = getRecipes()
+    if (!recipeId) {
+        return
+    }
     const titleEl = document.querySelector('#recipe-title')
     const instructionsEl = document.querySelector('#recipe-instructions')
-
-
-    const { title, instructions } = recipes.find((recipe) => recipe.id.includes(recipeId))
-
-    titleEl.value = title
-    instructionsEl.value = instructions
-
-
+    const recipe = findRecipe(recipeId)
+    titleEl.value = recipe.title
+    instructionsEl.value = recipe.instructions
 }
 
 const renderIngredientList = (recipeId) => {
-    const recipes = getRecipes()
-    const { ingredients, id } = recipes.find((recipe) => recipe.id.includes(recipeId))
-    console.log(ingredients, id)
+    if (!recipeId) {
+        return
+    }
+    const { ingredients, id } = findRecipe(recipeId)
     const ingredientsListEl = document.querySelector('#ingredients-list')
 
     ingredientsListEl.innerHTML = ''
@@ -100,4 +158,4 @@ const renderIngredientList = (recipeId) => {
     })
 }
 
-export { renderRecipes, initialiseDisplayPage, initialiseEditPage, renderIngredientList }
+export { renderRecipes, initialiseDisplayPage, initialiseEditPage, renderIngredientList, renderIngredientsFilter }

@@ -1,14 +1,27 @@
 const filters = {
-    searchText: ''
+    searchText: '',
+    myIngredients: []
 }
 
 const getFilters = () => filters
 
-const setFilters = ({ searchText }) => {
+const setFilters = ({ searchText, myIngredients }) => {
     if (typeof searchText === 'string') {
         filters.searchText = searchText
-        console.log(filters)
+    }
+    if (typeof myIngredients === 'string') {
+        filters.myIngredients.push(myIngredients)
     }
 }
 
-export { getFilters, setFilters }
+const unsetFilters = ({ myIngredients }) => {
+
+    if (typeof myIngredients === 'string') {
+        const myIngredientsIndex = filters.myIngredients.findIndex((ingredient) => ingredient === myIngredients)
+        if (myIngredientsIndex > -1) {
+            filters.myIngredients.splice(myIngredientsIndex, 1)
+        }
+    }
+}
+
+export { getFilters, setFilters, unsetFilters }

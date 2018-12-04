@@ -1,13 +1,12 @@
 import { setFilters, getFilters } from './filters'
-import { renderRecipes } from './views'
+import { renderRecipes, renderIngredientsFilter } from './views'
 import { createRecipe } from './recipes'
 
 renderRecipes()
+renderIngredientsFilter()
 
-console.log(document.querySelector('#create-recipe'))
 document.querySelector('#create-recipe').addEventListener('click', () => {
-    createRecipe()
-    renderRecipes()
+    location.assign('/edit.html')
 })
 
 document.querySelector('#search-text').addEventListener('input', (e) => {

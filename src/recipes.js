@@ -28,10 +28,10 @@ const createRecipe = () => {
     recipes.push({
         title: 'nkkjame',
         instructions: 'blablabalbala',
-        
+
         ingredients: [{
             name: 'poulet',
-            inStock: true
+            inStock: false
         }, {
             name: 'rôti',
             inStock: false
@@ -76,7 +76,8 @@ const updateRecipe = (id, { title, instructions, ingredient }) => {
 }
 
 const removeIngredient = (id, ingredientName) => {
-    const {ingredients} = findRecipe(id)
+
+    const { ingredients } = findRecipe(id)
     const ingredientIndex = ingredients.findIndex((ingredient) => ingredient.name === ingredientName)
 
     if (ingredientIndex > -1) {
@@ -84,6 +85,44 @@ const removeIngredient = (id, ingredientName) => {
         saveRecipes()
     }
 }
+
+const removeRecipe = (id) => {
+    const recipeIndex = recipes.findIndex((recipe) => recipe.id === id)
+
+    if (recipeIndex > -1) {
+        recipes.splice(recipeIndex, 1)
+        saveRecipes()
+    }
+
+}
+
+const getAllIngredients = () => {
+    let allIngredients = []
+
+    recipes.forEach((recipe) => {
+        recipe.ingredients.forEach((ingredient) => allIngredients.push(ingredient.name))
+    })
+    allIngredients = allIngredients.filter((ingredient, index) => allIngredients.indexOf(ingredient) === index)
+
+    return allIngredients
+}
+
+const refreshIngredientStock = (addingredient) => {
+    for (let i = 0; i < recipes.length; i++) {
+        for (let j = 0; j < addingredient.length; j++) {
+            recipes[i].ingredients.forEach((ingredient) => {
+                if (ingredient.name === addingredient[j]) {
+                    ingredient.inStock = true
+                } else {
+                    ingredient.inStock = false
+                }
+            })
+        }
+    }
+    saveRecipes()
+}
+
 recipes = loadRecipes()
 
-export { getRecipes, createRecipe, saveRecipes, toggleIngredient, updateRecipe, removeIngredient }
+export { getRecipes, createRecipe, saveRecipes, toggleIngredient, updateRecipe, findRecipe }
+export { removeIngredient, removeRecipe, getAllIngredients, refreshIngredientStock }

@@ -1,7 +1,8 @@
-import { updateRecipe } from './recipes'
-import { initialiseEditPage, renderIngredientList,  } from './views'
+import { updateRecipe, removeRecipe  } from './recipes'
+import { initialiseEditPage, renderIngredientList, } from './views'
 
 const recipeId = location.hash.substring(1)
+console.log(recipeId)
 let newIngredient = ''
 
 initialiseEditPage(recipeId)
@@ -29,4 +30,9 @@ document.querySelector('#add-ingredient').addEventListener('click', () => {
         ingredient: newIngredient
     })
     renderIngredientList(recipeId)
+})
+
+document.querySelector('#remove-recipe').addEventListener('click', () => {
+    removeRecipe(recipeId)
+    location.assign('/index.html')
 })
