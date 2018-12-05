@@ -16,4 +16,8 @@ document.querySelector('#search-text').addEventListener('input', (e) => {
     renderRecipes()
 })
 
-
+window.addEventListener('sotrage', (e) => {
+    if (e.key === 'recipes') {
+        renderRecipes()
+    }
+})

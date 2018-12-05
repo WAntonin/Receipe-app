@@ -1,18 +1,39 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Recipe App</title>
-    </head>
-    <body>
-        <a id="home" href="/index.html">Home</a>
-        <a id="edit-recipe">Edit recipe</a>
-        <h1 id="recipe-title"></h1>
-        <h2 id="instructions-title">Instructions</h2>
-        <div id="instruction-display"></div>
-        <h2 id="ingredients-title">Ingredients</h2>
-        <div id="ingredients-display"></div>
 
-        <script src="/scripts/display-bundle.js"></script>
-    </body>
+<head>
+    <title>Recipe App</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">Recipe App</h1>
+        </div>
+    </header>
+    <div class="actions">
+        <div class="actions__container actions__container--spaced">
+            <a id="home" href="/index.html">Home</a>
+            <button class="button" id="edit-recipe">Edit recipe</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="recipe">
+            <h1 class="recipe__title" id="recipe-title"></h1>
+
+        <h2 class="recipe__subtitle" id="instructions-title">Instructions</h2>
+        <div class="recipe__elmt" id="instruction-display"></div>
+
+        <h2 id="ingredients-title">Ingredients</h2>
+        <div class="recipe__elmt" id="ingredients-display"></div>
+        </div>
+        
+    </div>
+
+
+    <script src="/scripts/display-bundle.js"></script>
+</body>
+
 </html>

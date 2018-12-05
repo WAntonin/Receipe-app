@@ -1,20 +1,43 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Recipe App</title>
-    </head>
-    <body>
-        <a id="home" href="/index.html">Home</a>
-        <input type="text" id="recipe-title" placeholder="Edit the title">
-        <h2 id="instructions-title">Instructions</h2>
-        <textarea id="recipe-instructions" placeholder="Enter the recipe instructions."></textarea>
-        <h2 id="ingredients-title">Ingredients</h2>
-        <div id="ingredients-list"></div>
-        <input type="text" id="input-ingredient">
-        <button id="add-ingredient">Add ingredient</button>
-        <button id="remove-recipe">Delete recipe</button>
 
-        <script src="/scripts/edit-bundle.js"></script>
-    </body>
+<head>
+    <title>Recipe App</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">Recipe App</h1>
+        </div>
+    </header>
+    <div class="actions">
+        <div class="actions__container">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+    </div>
+    <div class="container">
+        <input class="title-input" type="text" id="recipe-title" placeholder="Edit the title">
+        
+        <h2 id="instructions-title">Instructions</h2>
+        <textarea class="instructions-input" id="recipe-instructions" placeholder="Enter the recipe instructions."></textarea>
+        
+        <h2 id="ingredients-title">Ingredients</h2>
+        <div class="recipe__elmt"id="ingredients-list"></div>
+        
+        <input class="input" type="text" id="input-ingredient" placeholder="Add an ingredient">
+        <button class="button" id="add-ingredient">Add ingredient</button>
+        
+        <div class="recipe__elmt recipe__elmt--danger">
+            <button class="button button--danger" id="remove-recipe">Delete recipe</button>
+        </div> 
+    </div>
+
+
+
+    <script src="/scripts/edit-bundle.js"></script>
+</body>
+
 </html>

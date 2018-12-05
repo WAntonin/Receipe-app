@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Recipe App</title>
-    </head>
-    <body>
-        <h1>Recipe App</h1>
-        <button id="create-recipe">New recipe</button>
-        <div id="container-ingredients-filter">
-            <h3>My ingredients</h3>
-            <div id="filter-ingredients"></div>
-            <h3>Available ingredients</h3>
-            <div id="available-ingredients"></div>
+
+<head>
+    <title>Recipe App</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">Recipe App</h1>
         </div>
-        <input id="search-text" type="text" placeholder="Filter recipes">
-        <div id="recipes"></div>
-        <script src="/scripts/index-bundle.js"></script>
-    </body>
+    </header>
+    <div class="actions">
+        <div class="actions__container actions__container--spaced">
+                <span>Search: <input class="input" id="search-text" type="text" placeholder="Filter recipes"></span>
+                <button class="button" id="create-recipe">New recipe</button>
+        </div>
+        <div class="actions__container">
+            <div id="container-ingredients-filter">
+                <h3 class="actions__title">My ingredients:</h3>
+                <div id="filter-ingredients"></div>
+                <h3 class="actions__title">Available ingredients:</h3>
+                <div id="available-ingredients"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+            <div id="recipes"></div>
+    </div>
+    <script src="/scripts/index-bundle.js"></script>
+</body>
+
 </html>

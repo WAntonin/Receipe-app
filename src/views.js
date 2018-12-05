@@ -6,6 +6,7 @@ const generateRecipeDOM = (recipe) => {
     const recipeEl = document.createElement('a')
     const titleEl = document.createElement('p')
 
+    titleEl.classList.add('list-item__title')
     if (recipe.title.length > 0) {
         titleEl.textContent = recipe.title
     } else {
@@ -14,13 +15,14 @@ const generateRecipeDOM = (recipe) => {
 
     recipeEl.setAttribute('href', `/display.html#${recipe.id}`)
     recipeEl.appendChild(titleEl)
-
+    recipeEl.classList.add('list-item') 
     return recipeEl
 }
 
 const renderRecipes = () => {
     const { searchText, myIngredients } = getFilters()
     const recipes = getRecipes()
+    const recipesEl = document.querySelector('#recipes')
 
     // 
     let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
@@ -42,13 +44,19 @@ const renderRecipes = () => {
         })
     }
 
-    const recipesEl = document.querySelector('#recipes')
     recipesEl.innerHTML = ''
 
-    filteredRecipes.forEach((recipe) => {
+    if (filteredRecipes.length > 0) {
+        filteredRecipes.forEach((recipe) => {
         const recipeEl = generateRecipeDOM(recipe)
         recipesEl.appendChild(recipeEl)
     })
+    } else {
+        const emptyMessage = document.createElement('p')
+        emptyMessage.textContent = 'Sorry. No recipes matching your criterias.'
+        emptyMessage.classList.add('empty-message')
+        recipesEl.appendChild(emptyMessage)
+    }
 }
 
 const renderIngredientsFilter = () => {
@@ -67,6 +75,7 @@ const renderIngredientsFilter = () => {
     myIngredients.forEach((ingredient) => {
         const ingredientEl = document.createElement('span')
         ingredientEl.textContent = ingredient
+        ingredientEl.classList.add('actions__filter-item')
         ingredientEl.addEventListener('click', () => {
             unsetFilters({
                 myIngredients: ingredient
@@ -80,6 +89,7 @@ const renderIngredientsFilter = () => {
     availableIngredients.forEach((ingredient) => {
         const ingredientEl = document.createElement('span')
         ingredientEl.textContent = ingredient
+        ingredientEl.classList.add('actions__filter-item')
         ingredientEl.addEventListener('click', () => {
             setFilters({
                 myIngredients: ingredient
@@ -92,14 +102,15 @@ const renderIngredientsFilter = () => {
 }
 
 const initialiseDisplayPage = (recipeId) => {
-    const recipes = getRecipes()
     const titleEl = document.querySelector('#recipe-title')
     const instructionsEl = document.querySelector('#instruction-display')
     const ingredientsEl = document.querySelector('#ingredients-display')
     const editRecipeEl = document.querySelector('#edit-recipe')
     const recipe = findRecipe(recipeId)
 
-    editRecipeEl.setAttribute('href', `/edit.html#${recipeId}`)
+    editRecipeEl.addEventListener('click', () => {
+        location.assign(`/edit.html#${recipeId}`)
+    })
 
     titleEl.textContent = recipe.title
     instructionsEl.textContent = recipe.instructions
@@ -132,7 +143,10 @@ const renderIngredientList = (recipeId) => {
     ingredientsListEl.innerHTML = ''
 
     ingredients.forEach((ingredient) => {
-        const ingredientContainerEl = document.createElement('div')
+        const ingredientContainerEl = document.createElement('label')
+        ingredientContainerEl.classList.add('list-ingredient')
+        const nameBoxEl = document.createElement('div')
+        nameBoxEl.classList.add('list-ingredient__container')
         const checkBoxEl = document.createElement('input')
         const ingredientEl = document.createElement('span')
         const removeBtnEl = document.createElement('button')
@@ -142,12 +156,15 @@ const renderIngredientList = (recipeId) => {
         checkBoxEl.addEventListener('change', () => {
             toggleIngredient(id, ingredient.name)
         })
-        ingredientContainerEl.appendChild(checkBoxEl)
+        nameBoxEl.appendChild(checkBoxEl)
 
         ingredientEl.textContent = ingredient.name
-        ingredientContainerEl.appendChild(ingredientEl)
+        nameBoxEl.appendChild(ingredientEl)
+
+        ingredientContainerEl.appendChild(nameBoxEl)
 
         removeBtnEl.textContent = 'remove'
+        removeBtnEl.classList.add('button', 'button--text')
         removeBtnEl.addEventListener('click', () => {
             removeIngredient(id, ingredient.name)
             renderIngredientList(recipeId)
