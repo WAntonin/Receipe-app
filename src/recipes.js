@@ -25,22 +25,18 @@ const findRecipe = (id) => {
 
 const createRecipe = () => {
     const timestamp = moment().valueOf()
+    const id = uuidv4()
     recipes.push({
-        title: 'nkkjame',
-        instructions: 'blablabalbala',
+        title: '',
+        instructions: '',
 
-        ingredients: [{
-            name: 'poulet',
-            inStock: false
-        }, {
-            name: 'rôti',
-            inStock: false
-        }],
-        id: uuidv4(),
+        ingredients: [],
+        id: id,
         createdAt: timestamp,
         updatedAt: timestamp,
     })
     saveRecipes()
+    return id
 }
 
 const toggleIngredient = (id, name) => {
@@ -55,7 +51,6 @@ const toggleIngredient = (id, name) => {
 
 const updateRecipe = (id, { title, instructions, ingredient }) => {
     const recipe = findRecipe(id)
-
     if (!recipe) {
         return
     }

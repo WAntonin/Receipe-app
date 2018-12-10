@@ -1,8 +1,7 @@
-import { updateRecipe, removeRecipe  } from './recipes'
+import { updateRecipe, removeRecipe } from './recipes'
 import { initialiseEditPage, renderIngredientList, } from './views'
 
 const recipeId = location.hash.substring(1)
-console.log(recipeId)
 let newIngredient = ''
 
 initialiseEditPage(recipeId)
@@ -21,9 +20,8 @@ document.querySelector('#recipe-instructions').addEventListener('input', (e) => 
 })
 
 document.querySelector('#input-ingredient').addEventListener('input', (e) => {
-   newIngredient = e.target.value.trim()
-   console.log(newIngredient)
-} )
+    newIngredient = e.target.value.trim()
+})
 
 document.querySelector('#add-ingredient').addEventListener('click', () => {
     updateRecipe(recipeId, {
@@ -35,4 +33,12 @@ document.querySelector('#add-ingredient').addEventListener('click', () => {
 document.querySelector('#remove-recipe').addEventListener('click', () => {
     removeRecipe(recipeId)
     location.assign('/index.html')
+})
+
+window.addEventListener('storage', (e) => {
+    if (e.key === 'recipes') {
+        console.log('test storage listenerS')
+        initialiseEditPage(recipeId)
+        renderIngredientList(recipeId)
+    }
 })

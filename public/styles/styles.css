@@ -64,6 +64,12 @@ body {
 
 
 /* Ingredient filter */
+.actions__container__filter-item {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    align-content:flex-start;
+}
 
 .actions__filter-item {
     background: #666;

@@ -6,7 +6,8 @@ renderRecipes()
 renderIngredientsFilter()
 
 document.querySelector('#create-recipe').addEventListener('click', () => {
-    location.assign('/edit.html')
+    let id = createRecipe()
+    location.assign(`/edit.html#${id}`)
 })
 
 document.querySelector('#search-text').addEventListener('input', (e) => {
@@ -19,5 +20,6 @@ document.querySelector('#search-text').addEventListener('input', (e) => {
 window.addEventListener('sotrage', (e) => {
     if (e.key === 'recipes') {
         renderRecipes()
+        renderIngredientsFilter()
     }
 })

@@ -80,6 +80,7 @@ const renderIngredientsFilter = () => {
             unsetFilters({
                 myIngredients: ingredient
             })
+            console.log(myIngredients)
             renderIngredientsFilter()
             renderRecipes()
         })
@@ -94,6 +95,7 @@ const renderIngredientsFilter = () => {
             setFilters({
                 myIngredients: ingredient
             })
+            console.log(myIngredients)
             renderIngredientsFilter()
             renderRecipes()
         })
@@ -104,7 +106,7 @@ const renderIngredientsFilter = () => {
 const initialiseDisplayPage = (recipeId) => {
     const titleEl = document.querySelector('#recipe-title')
     const instructionsEl = document.querySelector('#instruction-display')
-    const ingredientsEl = document.querySelector('#ingredients-display')
+    const ingredientListEl = document.querySelector('#ingredients-display')
     const editRecipeEl = document.querySelector('#edit-recipe')
     const recipe = findRecipe(recipeId)
 
@@ -116,9 +118,25 @@ const initialiseDisplayPage = (recipeId) => {
     instructionsEl.textContent = recipe.instructions
 
     recipe.ingredients.forEach((ingredient) => {
-        let ingredientEl = document.createElement('p')
+        const ingredientContainerEl = document.createElement('label')
+        ingredientContainerEl.classList.add('list-ingredient')
+        const nameBoxEl = document.createElement('div')
+        nameBoxEl.classList.add('list-ingredient__container')
+        const checkBoxEl = document.createElement('input')
+        const ingredientEl = document.createElement('span')
+
+        checkBoxEl.setAttribute('type', 'checkbox')
+        checkBoxEl.checked = ingredient.inStock
+        checkBoxEl.addEventListener('change', () => {
+            toggleIngredient(recipeId, ingredient.name)
+        })
+        nameBoxEl.appendChild(checkBoxEl)
+
         ingredientEl.textContent = ingredient.name
-        ingredientsEl.appendChild(ingredientEl)
+        nameBoxEl.appendChild(ingredientEl)
+
+        ingredientContainerEl.appendChild(nameBoxEl)
+        ingredientListEl.appendChild(ingredientContainerEl)
     })
 }
 
@@ -138,9 +156,9 @@ const renderIngredientList = (recipeId) => {
         return
     }
     const { ingredients, id } = findRecipe(recipeId)
-    const ingredientsListEl = document.querySelector('#ingredients-list')
+    const ingredientListEl = document.querySelector('#ingredients-list')
 
-    ingredientsListEl.innerHTML = ''
+    ingredientListEl.innerHTML = ''
 
     ingredients.forEach((ingredient) => {
         const ingredientContainerEl = document.createElement('label')
@@ -171,7 +189,7 @@ const renderIngredientList = (recipeId) => {
         })
         ingredientContainerEl.appendChild(removeBtnEl)
 
-        ingredientsListEl.appendChild(ingredientContainerEl)
+        ingredientListEl.appendChild(ingredientContainerEl)
     })
 }
 
