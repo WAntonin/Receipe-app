@@ -21,12 +21,12 @@ const generateRecipeDOM = (recipe) => {
 
 const renderRecipes = () => {
     const { searchText, myIngredients } = getFilters()
-    console.log('renderRecipe', myIngredients)
+    // console.log('renderRecipe', myIngredients)
     const recipes = getRecipes()
     const recipesEl = document.querySelector('#recipes')
 
     let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
-    console.log('filtered Recipes ', filteredRecipes)
+    // console.log('filtered Recipes ', filteredRecipes)
     // const filterIngredients = myIngredients.includes(recipe.ingredients.forEach((ingredient) => ingredient.name))
     // console.log(recipe.ingredients.forEach((ingredient) => ingredient.name))
     // console.log('filterIngredients', filterIngredients)
@@ -36,13 +36,13 @@ const renderRecipes = () => {
         refreshIngredientStock(myIngredients)
         filteredRecipes = filteredRecipes.filter((recipe) => {
             if (ingredientsInStock(recipe) > 0) {
-                console.log('selected recipe ', recipe.title)
+                // console.log('selected recipe ', recipe.title)
                 return true
             } else {
                 return false
             }
         })
-        console.log('ingredient filtered recipes ', filteredRecipes)
+        // console.log('ingredient filtered recipes ', filteredRecipes)
     }
     // filteredRecipes = filteredRecipes.filter((recipe) => {
     //     let display = false
@@ -167,6 +167,7 @@ const renderIngredientList = (recipeId) => {
     const { ingredients, id } = findRecipe(recipeId)
     const ingredientListEl = document.querySelector('#ingredients-list')
 
+    document.querySelector('#ingredient-form').reset()
     ingredientListEl.innerHTML = ''
 
     ingredients.forEach((ingredient) => {

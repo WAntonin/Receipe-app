@@ -20,19 +20,20 @@
     </div>
     <div class="container">
         <input class="title-input" type="text" id="recipe-title" placeholder="Edit the title">
-        
+
         <h2 id="instructions-title">Instructions</h2>
         <textarea class="instructions-input" id="recipe-instructions" placeholder="Enter the recipe instructions."></textarea>
-        
+
         <h2 id="ingredients-title">Ingredients</h2>
-        <div class="recipe__elmt"id="ingredients-list"></div>
-        
-        <input class="input" type="text" id="input-ingredient" placeholder="Add an ingredient">
-        <button class="button" id="add-ingredient">Add ingredient</button>
-        
+        <div class="recipe__elmt" id="ingredients-list"></div>
+        <form action="" id="ingredient-form">
+            <input class="input" type="text" name="ingredient" placeholder="Add an ingredient">
+            <input type="submit" value="Add ingredient" class="button">
+        </form>
+
         <div class="recipe__elmt recipe__elmt--danger">
             <button class="button button--danger" id="remove-recipe">Delete recipe</button>
-        </div> 
+        </div>
     </div>
 
 

@@ -19,13 +19,22 @@ document.querySelector('#recipe-instructions').addEventListener('input', (e) => 
     })
 })
 
-document.querySelector('#input-ingredient').addEventListener('input', (e) => {
-    newIngredient = e.target.value.trim()
-})
+// document.querySelector('#input-ingredient').addEventListener('input', (e) => {
+//     newIngredient = e.target.value.trim()
+// })
 
-document.querySelector('#add-ingredient').addEventListener('click', () => {
+// document.querySelector('#add-ingredient').addEventListener('click', () => {
+//     updateRecipe(recipeId, {
+//         ingredient: newIngredient
+//     })
+//     renderIngredientList(recipeId)
+// })
+
+document.querySelector('#ingredient-form').addEventListener('submit', (e) => {
+    e.preventDefault()
+    console.log(e.target.ingredient.value)
     updateRecipe(recipeId, {
-        ingredient: newIngredient
+        ingredient: e.target.ingredient.value.trim()
     })
     renderIngredientList(recipeId)
 })
