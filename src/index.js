@@ -1,4 +1,4 @@
-import { setFilters, getFilters } from './filters'
+import { setFilters } from './filters'
 import { renderRecipes, renderIngredientsFilter } from './views'
 import { createRecipe } from './recipes'
 

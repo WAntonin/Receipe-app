@@ -5,32 +5,31 @@ import { getFilters, setFilters, unsetFilters } from './filters'
 const generateRecipeDOM = (recipe) => {
     const recipeEl = document.createElement('a')
     const titleEl = document.createElement('p')
-
     titleEl.classList.add('list-item__title')
+    const stockEl = document.createElement('p')
+    stockEl.classList.add('list-item__subtitle')
+
     if (recipe.title.length > 0) {
+        const numberOfIngredients = ingredientsInStock(recipe)
         titleEl.textContent = recipe.title
+        stockEl.textContent = `You have ${numberOfIngredients} of this recipe`
     } else {
         titleEl.textContent = 'Unamed recipe'
     }
 
     recipeEl.setAttribute('href', `/display.html#${recipe.id}`)
     recipeEl.appendChild(titleEl)
+    recipeEl.appendChild(stockEl)
     recipeEl.classList.add('list-item')
     return recipeEl
 }
 
 const renderRecipes = () => {
     const { searchText, myIngredients } = getFilters()
-    // console.log('renderRecipe', myIngredients)
     const recipes = getRecipes()
     const recipesEl = document.querySelector('#recipes')
 
     let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
-    // console.log('filtered Recipes ', filteredRecipes)
-    // const filterIngredients = myIngredients.includes(recipe.ingredients.forEach((ingredient) => ingredient.name))
-    // console.log(recipe.ingredients.forEach((ingredient) => ingredient.name))
-    // console.log('filterIngredients', filterIngredients)
-    // // recipe.ingredients.forEach((ingredient) => myIngredients.includes(ingredient.name))
 
     if (myIngredients.length > 0) {
         refreshIngredientStock(myIngredients)
@@ -42,18 +41,7 @@ const renderRecipes = () => {
                 return false
             }
         })
-        // console.log('ingredient filtered recipes ', filteredRecipes)
     }
-    // filteredRecipes = filteredRecipes.filter((recipe) => {
-    //     let display = false
-    //     recipe.ingredients.forEach((ingredient) => {
-    //         display = display || ingredient.inStock
-    //         return display
-    //     })
-    //     console.log(recipe.title, display)
-    //     return display
-    // })
-
 
     recipesEl.innerHTML = ''
 
@@ -167,7 +155,7 @@ const renderIngredientList = (recipeId) => {
     const { ingredients, id } = findRecipe(recipeId)
     const ingredientListEl = document.querySelector('#ingredients-list')
 
-    document.querySelector('#ingredient-form').reset()
+    document.querySelector('#add-ingredient').reset()
     ingredientListEl.innerHTML = ''
 
     ingredients.forEach((ingredient) => {

@@ -109,36 +109,29 @@ const getAllIngredients = () => {
 
 const refreshIngredientStock = (addIngredient) => {
     recipes.forEach((recipe) => {
-        console.log(recipe)
         recipe.ingredients.forEach((ingredient) => {
-            console.log(ingredient)
             if (addIngredient.includes(ingredient.name)) {
-                console.log(`${ingredient.name} TRUE`)
                 ingredient.inStock = true
             } else {
-                console.log(`${ingredient.name} FALSE`)
                 ingredient.inStock = false
             }
         })
     })
-    // console.log(`Lenght ${addIngredient.length} myIngredients ${addIngredient}`)
-    // for (let i = 0; i < recipes.length; i++) {
-    //     for (let j = 0; j <  addIngredient.length; j++) {
-    //         recipes[i].ingredients.forEach((ingredient) => {
-    //             if (ingredient.name === addIngredient[j]) {
-    //                 console.log(`${ingredient.name} TRUE`)
-    //                 ingredient.inStock = true
-    //             } else {
-    //                 console.log(`${ingredient.name} FALSE`)
-    //                 ingredient.inStock = false
-    //             }
-    //         })
-    //     }
-    // }
     saveRecipes()
 }
 
 recipes = loadRecipes()
 
-export { getRecipes, createRecipe, saveRecipes, toggleIngredient, updateRecipe, findRecipe }
-export { removeIngredient, removeRecipe, getAllIngredients, refreshIngredientStock, ingredientsInStock }
+export {
+    getRecipes,
+    createRecipe,
+    saveRecipes,
+    toggleIngredient,
+    updateRecipe,
+    findRecipe,
+    removeIngredient,
+    removeRecipe,
+    getAllIngredients,
+    refreshIngredientStock,
+    ingredientsInStock
+}

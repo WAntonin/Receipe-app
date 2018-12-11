@@ -24,4 +24,8 @@ const unsetFilters = ({ myIngredients }) => {
     }
 }
 
-export { getFilters, setFilters, unsetFilters }
+export {
+    getFilters,
+    setFilters,
+    unsetFilters
+}

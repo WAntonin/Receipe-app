@@ -2,10 +2,13 @@ import { updateRecipe, removeRecipe } from './recipes'
 import { initialiseEditPage, renderIngredientList, } from './views'
 
 const recipeId = location.hash.substring(1)
-let newIngredient = ''
 
 initialiseEditPage(recipeId)
 renderIngredientList(recipeId)
+
+document.querySelector('#save').addEventListener('click', () => {
+    location.assign('/index.html')
+})
 
 document.querySelector('#recipe-title').addEventListener('input', (e) => {
     updateRecipe(recipeId, {
@@ -19,24 +22,15 @@ document.querySelector('#recipe-instructions').addEventListener('input', (e) => 
     })
 })
 
-// document.querySelector('#input-ingredient').addEventListener('input', (e) => {
-//     newIngredient = e.target.value.trim()
-// })
-
-// document.querySelector('#add-ingredient').addEventListener('click', () => {
-//     updateRecipe(recipeId, {
-//         ingredient: newIngredient
-//     })
-//     renderIngredientList(recipeId)
-// })
-
-document.querySelector('#ingredient-form').addEventListener('submit', (e) => {
+document.querySelector('#add-ingredient').addEventListener('submit', (e) => {
+    const newIngredient = e.target.ingredient.value.trim()
     e.preventDefault()
-    console.log(e.target.ingredient.value)
-    updateRecipe(recipeId, {
-        ingredient: e.target.ingredient.value.trim()
+    if (newIngredient.length > 0) {
+        updateRecipe(recipeId, {
+        ingredient: newIngredient
     })
     renderIngredientList(recipeId)
+    }  
 })
 
 document.querySelector('#remove-recipe').addEventListener('click', () => {
