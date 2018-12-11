@@ -1,5 +1,5 @@
 import { getRecipes, toggleIngredient, removeIngredient, getAllIngredients } from './recipes'
-import { refreshIngredientStock, findRecipe } from './recipes'
+import { refreshIngredientStock, findRecipe, ingredientsInStock } from './recipes'
 import { getFilters, setFilters, unsetFilters } from './filters'
 
 const generateRecipeDOM = (recipe) => {
@@ -15,18 +15,18 @@ const generateRecipeDOM = (recipe) => {
 
     recipeEl.setAttribute('href', `/display.html#${recipe.id}`)
     recipeEl.appendChild(titleEl)
-    recipeEl.classList.add('list-item') 
+    recipeEl.classList.add('list-item')
     return recipeEl
 }
 
 const renderRecipes = () => {
     const { searchText, myIngredients } = getFilters()
+    console.log('renderRecipe', myIngredients)
     const recipes = getRecipes()
     const recipesEl = document.querySelector('#recipes')
 
-    // 
     let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
-
+    console.log('filtered Recipes ', filteredRecipes)
     // const filterIngredients = myIngredients.includes(recipe.ingredients.forEach((ingredient) => ingredient.name))
     // console.log(recipe.ingredients.forEach((ingredient) => ingredient.name))
     // console.log('filterIngredients', filterIngredients)
@@ -35,22 +35,33 @@ const renderRecipes = () => {
     if (myIngredients.length > 0) {
         refreshIngredientStock(myIngredients)
         filteredRecipes = filteredRecipes.filter((recipe) => {
-            let display = false
-            recipe.ingredients.forEach((ingredient) => {
-                display = display || ingredient.inStock
-                return display
-            })
-            return display
+            if (ingredientsInStock(recipe) > 0) {
+                console.log('selected recipe ', recipe.title)
+                return true
+            } else {
+                return false
+            }
         })
+        console.log('ingredient filtered recipes ', filteredRecipes)
     }
+    // filteredRecipes = filteredRecipes.filter((recipe) => {
+    //     let display = false
+    //     recipe.ingredients.forEach((ingredient) => {
+    //         display = display || ingredient.inStock
+    //         return display
+    //     })
+    //     console.log(recipe.title, display)
+    //     return display
+    // })
+
 
     recipesEl.innerHTML = ''
 
     if (filteredRecipes.length > 0) {
         filteredRecipes.forEach((recipe) => {
-        const recipeEl = generateRecipeDOM(recipe)
-        recipesEl.appendChild(recipeEl)
-    })
+            const recipeEl = generateRecipeDOM(recipe)
+            recipesEl.appendChild(recipeEl)
+        })
     } else {
         const emptyMessage = document.createElement('p')
         emptyMessage.textContent = 'Sorry. No recipes matching your criterias.'
@@ -80,7 +91,6 @@ const renderIngredientsFilter = () => {
             unsetFilters({
                 myIngredients: ingredient
             })
-            console.log(myIngredients)
             renderIngredientsFilter()
             renderRecipes()
         })
@@ -95,7 +105,6 @@ const renderIngredientsFilter = () => {
             setFilters({
                 myIngredients: ingredient
             })
-            console.log(myIngredients)
             renderIngredientsFilter()
             renderRecipes()
         })

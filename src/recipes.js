@@ -29,7 +29,6 @@ const createRecipe = () => {
     recipes.push({
         title: '',
         instructions: '',
-
         ingredients: [],
         id: id,
         createdAt: timestamp,
@@ -37,6 +36,12 @@ const createRecipe = () => {
     })
     saveRecipes()
     return id
+}
+
+const ingredientsInStock = (recipe) => {
+    let sum = 0
+    recipe.ingredients.forEach((ingredient) => ingredient.inStock === true ? sum += 1 : sum += 0)
+    return sum
 }
 
 const toggleIngredient = (id, name) => {
@@ -102,22 +107,38 @@ const getAllIngredients = () => {
     return allIngredients
 }
 
-const refreshIngredientStock = (addingredient) => {
-    for (let i = 0; i < recipes.length; i++) {
-        for (let j = 0; j < addingredient.length; j++) {
-            recipes[i].ingredients.forEach((ingredient) => {
-                if (ingredient.name === addingredient[j]) {
-                    ingredient.inStock = true
-                } else {
-                    ingredient.inStock = false
-                }
-            })
-        }
-    }
+const refreshIngredientStock = (addIngredient) => {
+    recipes.forEach((recipe) => {
+        console.log(recipe)
+        recipe.ingredients.forEach((ingredient) => {
+            console.log(ingredient)
+            if (addIngredient.includes(ingredient.name)) {
+                console.log(`${ingredient.name} TRUE`)
+                ingredient.inStock = true
+            } else {
+                console.log(`${ingredient.name} FALSE`)
+                ingredient.inStock = false
+            }
+        })
+    })
+    // console.log(`Lenght ${addIngredient.length} myIngredients ${addIngredient}`)
+    // for (let i = 0; i < recipes.length; i++) {
+    //     for (let j = 0; j <  addIngredient.length; j++) {
+    //         recipes[i].ingredients.forEach((ingredient) => {
+    //             if (ingredient.name === addIngredient[j]) {
+    //                 console.log(`${ingredient.name} TRUE`)
+    //                 ingredient.inStock = true
+    //             } else {
+    //                 console.log(`${ingredient.name} FALSE`)
+    //                 ingredient.inStock = false
+    //             }
+    //         })
+    //     }
+    // }
     saveRecipes()
 }
 
 recipes = loadRecipes()
 
 export { getRecipes, createRecipe, saveRecipes, toggleIngredient, updateRecipe, findRecipe }
-export { removeIngredient, removeRecipe, getAllIngredients, refreshIngredientStock }
+export { removeIngredient, removeRecipe, getAllIngredients, refreshIngredientStock, ingredientsInStock }
