@@ -1,6 +1,12 @@
-import { getRecipes, toggleIngredient, removeIngredient, getAllIngredients } from './recipes'
+import { getRecipes, 
+    toggleIngredient, 
+    removeIngredient, 
+    getAllIngredients 
+} from './recipes'
 import { refreshIngredientStock, findRecipe, ingredientsInStock } from './recipes'
-import { getFilters, setFilters, unsetFilters } from './filters'
+import { Filter } from './filters'
+
+const filter = new Filter()
 
 const generateRecipeDOM = (recipe) => {
     const recipeEl = document.createElement('a')
@@ -25,14 +31,13 @@ const generateRecipeDOM = (recipe) => {
 }
 
 const renderRecipes = () => {
-    const { searchText, myIngredients } = getFilters()
     const recipes = getRecipes()
     const recipesEl = document.querySelector('#recipes')
 
-    let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
+    let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(filter.searchText.toLowerCase()))
 
-    if (myIngredients.length > 0) {
-        refreshIngredientStock(myIngredients)
+    if (filter.myIngredients.length > 0) {
+        refreshIngredientStock(filter.myIngredients)
         filteredRecipes = filteredRecipes.filter((recipe) => {
             if (ingredientsInStock(recipe) > 0) {
                 // console.log('selected recipe ', recipe.title)
@@ -59,7 +64,6 @@ const renderRecipes = () => {
 }
 
 const renderIngredientsFilter = () => {
-    const { myIngredients } = getFilters()
     const availableIngredientsEl = document.querySelector('#available-ingredients')
     const filterIngredientsEl = document.querySelector('#filter-ingredients')
     let availableIngredients = getAllIngredients()
@@ -69,14 +73,14 @@ const renderIngredientsFilter = () => {
     filterIngredientsEl.innerHTML = ''
 
     // Remove filtered ingredients from available ingredients
-    availableIngredients = availableIngredients.filter((ingredient) => !myIngredients.includes(ingredient))
+    availableIngredients = availableIngredients.filter((ingredient) => !filter.myIngredients.includes(ingredient))
 
-    myIngredients.forEach((ingredient) => {
+    filter.myIngredients.forEach((ingredient) => {
         const ingredientEl = document.createElement('span')
         ingredientEl.textContent = ingredient
         ingredientEl.classList.add('actions__filter-item')
         ingredientEl.addEventListener('click', () => {
-            unsetFilters({
+            filter.unsetFilters({
                 myIngredients: ingredient
             })
             renderIngredientsFilter()
@@ -90,7 +94,7 @@ const renderIngredientsFilter = () => {
         ingredientEl.textContent = ingredient
         ingredientEl.classList.add('actions__filter-item')
         ingredientEl.addEventListener('click', () => {
-            setFilters({
+            filter.setFilters({
                 myIngredients: ingredient
             })
             renderIngredientsFilter()
@@ -126,6 +130,9 @@ const initialiseDisplayPage = (recipeId) => {
         checkBoxEl.checked = ingredient.inStock
         checkBoxEl.addEventListener('change', () => {
             toggleIngredient(recipeId, ingredient.name)
+            filter.setFilters({
+                myIngredients: ingredient
+            })
         })
         nameBoxEl.appendChild(checkBoxEl)
 
@@ -171,6 +178,9 @@ const renderIngredientList = (recipeId) => {
         checkBoxEl.checked = ingredient.inStock
         checkBoxEl.addEventListener('change', () => {
             toggleIngredient(id, ingredient.name)
+            filter.setFilters({
+                myIngredients: ingredient.name
+            })
         })
         nameBoxEl.appendChild(checkBoxEl)
 
