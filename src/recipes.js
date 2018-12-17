@@ -13,11 +13,11 @@ const loadRecipes = () => {
     }
 }
 
-const getRecipes = () => recipes
-
 const saveRecipes = () => {
     localStorage.setItem('recipes', JSON.stringify(recipes))
 }
+
+const getRecipes = () => recipes
 
 const findRecipe = (id) => {
     return recipes.find((recipe) => recipe.id === id)
@@ -46,7 +46,6 @@ const ingredientsInStock = (recipe) => {
 
 const toggleIngredient = (id, name) => {
     const recipe = findRecipe(id)
-
     if (recipe) {
         const ingredient = recipe.ingredients.find((ingredient) => ingredient.name === name)
         ingredient.inStock = !ingredient.inStock
@@ -71,7 +70,6 @@ const updateRecipe = (id, { title, instructions, ingredient }) => {
             inStock: false
         })
     }
-
     saveRecipes()
 }
 
@@ -107,6 +105,20 @@ const getAllIngredients = () => {
     return allIngredients
 }
 
+const getIngredientsInStock = () => {
+    let ingredientStock = []
+    recipes.forEach((recipe) => {
+        recipe.ingredients.forEach((ingredient) => {
+            if (ingredient.inStock ) {
+                ingredientStock.push(ingredient.name)
+            }
+        })
+    })
+    ingredientStock = ingredientStock.filter((ingredient, index) => ingredientStock.indexOf(ingredient) === index)
+    console.log(ingredientStock)
+    return ingredientStock
+}
+
 const refreshIngredientStock = (addIngredient) => {
     recipes.forEach((recipe) => {
         recipe.ingredients.forEach((ingredient) => {
@@ -132,6 +144,7 @@ export {
     removeIngredient,
     removeRecipe,
     getAllIngredients,
+    getIngredientsInStock,
     refreshIngredientStock,
     ingredientsInStock
 }

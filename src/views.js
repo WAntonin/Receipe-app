@@ -1,6 +1,17 @@
-import { getRecipes, toggleIngredient, removeIngredient, getAllIngredients } from './recipes'
-import { refreshIngredientStock, findRecipe, ingredientsInStock } from './recipes'
-import { getFilters, setFilters, unsetFilters } from './filters'
+import { getRecipes,
+    toggleIngredient,
+    removeIngredient,
+    getAllIngredients,
+    getIngredientsInStock,
+    refreshIngredientStock,
+    findRecipe,
+    ingredientsInStock
+} from './recipes'
+
+import { getFilters, 
+    setFilters,
+    unsetFilters
+} from './filters'
 
 const generateRecipeDOM = (recipe) => {
     const recipeEl = document.createElement('a')
@@ -25,17 +36,17 @@ const generateRecipeDOM = (recipe) => {
 }
 
 const renderRecipes = () => {
-    const { searchText, myIngredients } = getFilters()
+    console.log('renderRecipe')
     const recipes = getRecipes()
+    console.log(recipes)
+    const { searchText, myIngredients } = getFilters()
     const recipesEl = document.querySelector('#recipes')
 
     let filteredRecipes = recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()))
-
     if (myIngredients.length > 0) {
-        refreshIngredientStock(myIngredients)
+        
         filteredRecipes = filteredRecipes.filter((recipe) => {
             if (ingredientsInStock(recipe) > 0) {
-                // console.log('selected recipe ', recipe.title)
                 return true
             } else {
                 return false
@@ -59,15 +70,21 @@ const renderRecipes = () => {
 }
 
 const renderIngredientsFilter = () => {
-    const { myIngredients } = getFilters()
+    console.log('renderIngredientsFilter')
     const availableIngredientsEl = document.querySelector('#available-ingredients')
     const filterIngredientsEl = document.querySelector('#filter-ingredients')
+    
+    setFilters({
+        myIngredients: getIngredientsInStock()
+    })
+    let {myIngredients} = getFilters()
+    console.log('ingredient filter', myIngredients)
     let availableIngredients = getAllIngredients()
 
     // Clear ingredients
     availableIngredientsEl.innerHTML = ''
     filterIngredientsEl.innerHTML = ''
-
+    
     // Remove filtered ingredients from available ingredients
     availableIngredients = availableIngredients.filter((ingredient) => !myIngredients.includes(ingredient))
 
@@ -79,8 +96,9 @@ const renderIngredientsFilter = () => {
             unsetFilters({
                 myIngredients: ingredient
             })
-            renderIngredientsFilter()
+            refreshIngredientStock(myIngredients)
             renderRecipes()
+            renderIngredientsFilter()
         })
         filterIngredientsEl.appendChild(ingredientEl)
     })
@@ -93,6 +111,7 @@ const renderIngredientsFilter = () => {
             setFilters({
                 myIngredients: ingredient
             })
+            refreshIngredientStock(myIngredients)
             renderIngredientsFilter()
             renderRecipes()
         })

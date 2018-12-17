@@ -12,6 +12,10 @@ const setFilters = ({ searchText, myIngredients }) => {
     if (typeof myIngredients === 'string') {
         filters.myIngredients.push(myIngredients)
     }
+    if (Array.isArray(myIngredients)) {
+        filters.myIngredients = filters.myIngredients.concat(myIngredients)
+    }
+    filters.myIngredients = filters.myIngredients.filter((ingredient, index) => filters.myIngredients.indexOf(ingredient) === index)
 }
 
 const unsetFilters = ({ myIngredients }) => {

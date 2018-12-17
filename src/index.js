@@ -2,8 +2,9 @@ import { setFilters } from './filters'
 import { renderRecipes, renderIngredientsFilter } from './views'
 import { createRecipe } from './recipes'
 
-renderRecipes()
 renderIngredientsFilter()
+renderRecipes()
+
 
 document.querySelector('#create-recipe').addEventListener('click', () => {
     let id = createRecipe()
@@ -17,8 +18,9 @@ document.querySelector('#search-text').addEventListener('input', (e) => {
     renderRecipes()
 })
 
-window.addEventListener('sotrage', (e) => {
+window.addEventListener('storage', (e) => {
     if (e.key === 'recipes') {
+        console.log('Storage modification detected')
         renderRecipes()
         renderIngredientsFilter()
     }

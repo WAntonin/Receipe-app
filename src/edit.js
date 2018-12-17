@@ -40,7 +40,6 @@ document.querySelector('#remove-recipe').addEventListener('click', () => {
 
 window.addEventListener('storage', (e) => {
     if (e.key === 'recipes') {
-        console.log('test storage listenerS')
         initialiseEditPage(recipeId)
         renderIngredientList(recipeId)
     }
